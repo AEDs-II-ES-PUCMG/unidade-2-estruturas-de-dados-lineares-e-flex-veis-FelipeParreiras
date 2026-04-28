@@ -57,4 +57,52 @@ public class Pilha<E> {
 		// TODO
 		return null;
 	}
+
+	public void listarTodosOsItensPilha(){
+		System.out.println("\nItens da Pilha:");
+		if (this.vazia()) {
+			System.out.println("Pilha vazia!");
+			return;
+		}
+		Pilha <E> aux = new Pilha<>();
+		aux = this;
+		Celula<E> elemento = new Celula<E>(aux.consultarTopo());
+		int i = 0;
+		while (elemento.getItem() != fundo) {
+			i++;
+			System.out.println( i + ". "+ elemento.getItem());
+			elemento = elemento.getProximo();
+		}
+    }
+
+	public boolean PesquisarItemNaPilha(E e){
+		Pilha <E> aux = new Pilha<>();
+		boolean response = false;
+		while (!this.vazia()) {
+			aux.empilhar(this.desempilhar());
+		}
+		while (!aux.vazia()) {
+			E elemento = aux.desempilhar();
+			if(elemento.equals(e)){
+				response = true;
+			}
+			this.empilhar(elemento);
+		}
+		return response;
+    }
+
+	public void removerItemNaPilha(E e){
+		Pilha <E> aux = new Pilha<>();
+		boolean response = false;
+		while (!this.vazia()) {
+			aux.empilhar(this.desempilhar());
+		}
+		while (!aux.vazia()) {
+			E elemento = aux.desempilhar();
+			if(elemento.equals(e)){
+				continue;
+			}
+			this.empilhar(elemento);
+		}
+    }
 }

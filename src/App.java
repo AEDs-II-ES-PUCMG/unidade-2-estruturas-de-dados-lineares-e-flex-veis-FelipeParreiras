@@ -21,6 +21,8 @@ public class App {
 
     /** Pilha de pedidos */
     static Pilha<Pedido> pilhaPedidos = new Pilha<>();
+
+    static Pilha<Integer> pilhaInteiros = new Pilha<>();
         
     static void limparTela() {
         System.out.print("\033[H\033[2J");
@@ -64,6 +66,22 @@ public class App {
         System.out.println("4 - Iniciar novo pedido");
         System.out.println("5 - Fechar pedido");
         System.out.println("6 - Listar produtos dos pedidos mais recentes");
+        System.out.println("0 - Sair");
+        System.out.print("Digite sua opção: ");
+        return Integer.parseInt(teclado.nextLine());
+    }
+
+        /** Imprime o menu principal de teste, lê a opção do usuário e a retorna (int).
+     * @return Um inteiro com a opção do usuário.
+     */
+    static int menuTeste() {
+        cabecalho();
+        System.out.println("1 - Listar todos os itens da pilha");
+        System.out.println("2 - Empilhar Número Diferente");
+        // System.out.println("3 - Procurar por um produto, por nome");
+        // System.out.println("4 - Iniciar novo pedido");
+        // System.out.println("5 - Fechar pedido");
+        // System.out.println("6 - Listar produtos dos pedidos mais recentes");
         System.out.println("0 - Sair");
         System.out.print("Digite sua opção: ");
         return Integer.parseInt(teclado.nextLine());
@@ -173,6 +191,10 @@ public class App {
         	System.out.println(String.format("%02d - %s", (i + 1), produtosCadastrados[i].toString()));
         }
     }
+
+    static void listarTodosOsItensPilha(){
+        pilhaInteiros.listarTodosOsItensPilha();
+    }
     
     /** 
      * Inicia um novo pedido.
@@ -217,6 +239,35 @@ public class App {
     	
     	// TODO
     }
+
+    public static void empilharNovoItemPilha(){
+        System.out.print("Digite um número: ");
+        Integer e = Integer.parseInt(teclado.nextLine());
+        if(pilhaInteiros.PesquisarItemNaPilha(e)){
+            System.out.print("Este valor já existe na pilha!");
+        }else{
+            pilhaInteiros.empilhar(e);
+            System.out.print("Valor Inserido na pilha!");
+        }
+    }
+
+    public static void removerItemNaPilha(){
+        System.out.print("Digite um número para ser removido: ");
+        Integer e = Integer.parseInt(teclado.nextLine());
+        if(pilhaInteiros.PesquisarItemNaPilha(e)){
+            pilhaInteiros.removerItemNaPilha(e);
+            System.out.print("Valor removido da pilha");
+        }else{
+            System.out.print("Valor não encontrado na pilha!");
+        }
+    }
+    public static void desempilharPilha(){
+        if (pilhaInteiros.vazia()) {
+            System.out.println("Pilha está vazia!");
+            return; 
+        }
+        System.out.println("Valor desempilhado: " + pilhaInteiros.desempilhar());
+    }
     
 	public static void main(String[] args) {
 		
@@ -229,18 +280,29 @@ public class App {
         
         int opcao = -1;
       
+        // do{
+        //     opcao = menu();
+        //     switch (opcao) {
+        //         case 1 -> listarTodosOsProdutos();
+        //         case 2 -> mostrarProduto(localizarProduto());
+        //         case 3 -> mostrarProduto(localizarProdutoDescricao());
+        //         case 4 -> pedido = iniciarPedido();
+        //         case 5 -> finalizarPedido(pedido);
+        //         case 6 -> listarProdutosPedidosRecentes();
+        //     }
+        //     pausa();
+        // }while(opcao != 0);       
+
         do{
-            opcao = menu();
+            opcao = menuTeste();
             switch (opcao) {
-                case 1 -> listarTodosOsProdutos();
-                case 2 -> mostrarProduto(localizarProduto());
-                case 3 -> mostrarProduto(localizarProdutoDescricao());
-                case 4 -> pedido = iniciarPedido();
-                case 5 -> finalizarPedido(pedido);
-                case 6 -> listarProdutosPedidosRecentes();
+                case 1 -> listarTodosOsItensPilha();
+                case 2 -> empilharNovoItemPilha();
+                case 3 -> removerItemNaPilha();
+                case 4 -> desempilharPilha();
             }
             pausa();
-        }while(opcao != 0);       
+        }while(opcao != 0); 
 
         teclado.close();    
     }
