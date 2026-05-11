@@ -34,6 +34,36 @@ public class Fila<E> {
 		return frente.getProximo().getItem();
 	}
 
+	public int contarOcorrencias(E item) {
+		int quantidade = 0;
+		Celula<E> atual = frente.getProximo();
+
+		while (atual != null) {
+			if (atual.getItem().equals(item)) {
+				quantidade++;
+			}
+			atual = atual.getProximo();
+		}
+
+		return quantidade;
+	}
+
+	public Fila<E> extrairLote(int numItens) {
+		if (numItens < 0) {
+			throw new IllegalArgumentException("O numero de itens nao pode ser negativo.");
+		}
+
+		Fila<E> lote = new Fila<>();
+		int itensExtraidos = 0;
+
+		while (!vazia() && itensExtraidos < numItens) {
+			lote.enfileirar(desenfileirar());
+			itensExtraidos++;
+		}
+
+		return lote;
+	}
+
 	public void listarTodosOsItensFila() {
 		System.out.println("\nItens da Fila:");
 		if (vazia()) {
