@@ -53,9 +53,30 @@ public class Pilha<E> {
 	 * @throws IllegalArgumentException se a pilha não contém numItens elementos.
 	 */
 	public Pilha<E> subPilha(int numItens) {
-		
-		// TODO
-		return null;
+		if (numItens < 0) {
+			throw new IllegalArgumentException("O numero de itens nao pode ser negativo.");
+		}
+
+		Pilha<E> subPilhaInvertida = new Pilha<>();
+		Pilha<E> subPilha = new Pilha<>();
+		Celula<E> atual = topo;
+		int itensCopiados = 0;
+
+		while (atual != fundo && itensCopiados < numItens) {
+			subPilhaInvertida.empilhar(atual.getItem());
+			atual = atual.getProximo();
+			itensCopiados++;
+		}
+
+		if (itensCopiados < numItens) {
+			throw new IllegalArgumentException("A pilha nao contem a quantidade de itens solicitada.");
+		}
+
+		while (!subPilhaInvertida.vazia()) {
+			subPilha.empilhar(subPilhaInvertida.desempilhar());
+		}
+
+		return subPilha;
 	}
 
 	public void listarTodosOsItensPilha(){
@@ -64,11 +85,9 @@ public class Pilha<E> {
 			System.out.println("Pilha vazia!");
 			return;
 		}
-		Pilha <E> aux = new Pilha<>();
-		aux = this;
-		Celula<E> elemento = new Celula<E>(aux.consultarTopo());
+		Celula<E> elemento = topo;
 		int i = 0;
-		while (elemento.getItem() != fundo) {
+		while (elemento != fundo) {
 			i++;
 			System.out.println( i + ". "+ elemento.getItem());
 			elemento = elemento.getProximo();

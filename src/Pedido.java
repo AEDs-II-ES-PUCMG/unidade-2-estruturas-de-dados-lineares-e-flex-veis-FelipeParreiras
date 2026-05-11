@@ -43,6 +43,10 @@ public class Pedido implements Comparable<Pedido> {
 	public ItemDePedido[] getItensDoPedido() {
 		return itensDePedido;
 	}
+
+	public int getQuantItensDePedido() {
+		return quantItensDePedido;
+	}
 	
 	public ItemDePedido existeNoPedido(Produto produto) {
 		
