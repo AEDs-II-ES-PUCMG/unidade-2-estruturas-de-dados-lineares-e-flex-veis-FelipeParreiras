@@ -16,7 +16,7 @@ public class Pedido implements Comparable<Pedido> {
 	private int idPedido;
 	
 	/** Vetor para armazenar os itens do pedido */
-	private ItemDePedido[] itensDePedido;
+	private Lista<ItemDePedido> itensDePedido;
 	
 	/** Data de criação do pedido */
 	private LocalDate dataPedido;
@@ -34,13 +34,13 @@ public class Pedido implements Comparable<Pedido> {
 	public Pedido(LocalDate dataPedido, int formaDePagamento) {
 		
 		idPedido = ultimoID++;
-		itensDePedido = new ItemDePedido[MAX_ITENS_DE_PEDIDO];
+		itensDePedido = new Lista<ItemDePedido>();
 		quantItensDePedido = 0;
 		this.dataPedido = dataPedido;
 		this.formaDePagamento = formaDePagamento;
 	}
 	
-	public ItemDePedido[] getItensDoPedido() {
+	public Lista<ItemDePedido> getItensDoPedido() {
 		return itensDePedido;
 	}
 
@@ -51,12 +51,13 @@ public class Pedido implements Comparable<Pedido> {
 	public ItemDePedido existeNoPedido(Produto produto) {
 		
 		ItemDePedido itemDePedidoProcurado = new ItemDePedido(produto, 0, 0.1);
-		for (int i = 0; i < quantItensDePedido; i++) {
-			if (itensDePedido[i].equals(itemDePedidoProcurado)) {
-				return itensDePedido[i];
-			}
+		CriterioDeBuscaPorDescricao criterioDeBuscaPorDescricao = new CriterioDeBuscaPorDescricao();
+		if(itensDePedido.buscarPor(criterioDeBuscaPorDescricao,itemDePedidoProcurado) == null){
+			return null;
+		}else{
+			return itemDePedidoProcurado;
 		}
-		return null;
+		
 	}
 	
 	/**
@@ -76,7 +77,8 @@ public class Pedido implements Comparable<Pedido> {
 			return true;
 		}
 		else if (quantItensDePedido < MAX_ITENS_DE_PEDIDO) {
-			itensDePedido[quantItensDePedido++] = new ItemDePedido(novo, quantidade, novo.valorDeVenda());
+			quantItensDePedido++;
+			itensDePedido.inserirFinal(new ItemDePedido(novo, quantidade, novo.valorDeVenda())); 
 			return true;
 		}
 		return false;
@@ -93,7 +95,7 @@ public class Pedido implements Comparable<Pedido> {
 		BigDecimal valorPedidoBD;
 		
 		for (int i = 0; i < quantItensDePedido; i++) {
-			valorPedido += itensDePedido[i].getQuantidade() * itensDePedido[i].getPrecoVenda();
+			valorPedido += itensDePedido.somarMultiplicacoes(getItensDoPedido(), null);
 		}
 		
 		if (formaDePagamento == 1) {
@@ -143,9 +145,8 @@ public class Pedido implements Comparable<Pedido> {
 		
 		stringPedido.append("Pedido com " + quantItensDePedido + " itens.\n");
 		stringPedido.append("Itens de pedido no pedido:\n");
-		for (int i = 0; i < quantItensDePedido; i++ ) {
-			stringPedido.append(itensDePedido[i].toString() + "\n");
-		}
+		stringPedido.append(itensDePedido.toString() + "\n");
+
 		
 		stringPedido.append("Pedido pago ");
 		if (formaDePagamento == 1) {
